@@ -1,6 +1,5 @@
 // src/pages/admin/decks/index.tsx
 import { useEffect, useState, ChangeEvent } from 'react';
-import Layout from '../../../components/Layout';
 import Link from 'next/link';
 
 interface Card { id: string; name: string; imageUrl?: string; }
@@ -11,23 +10,33 @@ export default function AdminDecksPage() {
   const [selectedDeckId, setSelectedDeckId] = useState('');
   const [newDeckName, setNewDeckName] = useState('');
   const [cards, setCards] = useState<Card[]>([]);
-  // state ใหม่สำหรับฟอร์ม inline
   const [showNewCard, setShowNewCard] = useState(false);
   const [newCardName, setNewCardName] = useState('');
   const [newCardImage, setNewCardImage] = useState<string>('');
-
+// โหลด Decks ครั้งแรก
   useEffect(() => {
-    fetch('/api/decks').then(r=>r.json()).then(setDecks);
+    (async () => {
+      const res = await fetch('/api/decks');
+      const data = await res.json();
+      setDecks(data);
+    })();
   }, []);
 
+
+  // เลือก Deck
   const selectDeck = async (e: ChangeEvent<HTMLSelectElement>) => {
     const id = e.target.value;
     setSelectedDeckId(id);
     setShowNewCard(false);
-    if (!id) return setCards([]);
-    const deck = await (await fetch(`/api/decks/${id}`)).json();
+    if (!id) {
+      setCards([]);
+      return;
+    }
+    const deckRes = await fetch(`/api/decks/${id}`);
+    const deck = await deckRes.json();
     setCards(deck.cards);
   };
+
 
   const createDeck = async () => {
     if (!newDeckName.trim()) return;
@@ -85,10 +94,8 @@ export default function AdminDecksPage() {
   };
 
   return (
-    <Layout>
       <div className="p-6">
         <h1 className="text-2xl font-bold mb-4">จัดการ Deck & Cards</h1>
-
         {/* สร้าง Deck ใหม่ */}
         <div className="flex gap-2 mb-4">
           <input
@@ -97,13 +104,13 @@ export default function AdminDecksPage() {
             value={newDeckName}
             onChange={e=>setNewDeckName(e.target.value)}
           />
-          <button onClick={createDeck} className="bg-green-500 text-white px-4 py-2 rounded">
+          <button onClick={createDeck} className="bg-green-500 text-white px-4 py-2 rounded ml-[10px]">
             สร้าง Deck
           </button>
         </div>
 <br />
         {/* เลือก/บันทึก/ลบ Deck */}
-        <div className="flex gap-2 mb-6">
+        <div className="flex gap-2 mb-6 ">
           <select
             className="border p-2 w-1/4"
             value={selectedDeckId}
@@ -116,10 +123,10 @@ export default function AdminDecksPage() {
           </select>
           {selectedDeckId && (
             <>
-              <button onClick={saveDeck} className="bg-blue-500 text-white px-4 py-2 rounded">
+              <button onClick={saveDeck} className="bg-blue-500 text-white px-4 py-2 rounded ml-[10px]">
                 บันทึก Deck
               </button>
-              <button onClick={deleteDeck} className="bg-red-500 text-white px-4 py-2 rounded">
+              <button onClick={deleteDeck} className="bg-red-500 text-white px-4 py-2 rounded ml-[10px]">
                 ลบ Deck
               </button>
             </>
@@ -131,17 +138,17 @@ export default function AdminDecksPage() {
           <>
             <div className="grid grid-cols-5 gap-4 mb-4 ">
               {cards.map((card, idx) => (
-                <div key={card.id} className="border rounded p-2 text-center">
+                <div key={card.id} className="border rounded p-2 text-center ">
                   <div className="mt-1 text-xs text-gray-500">#{idx+1}</div>
                   {card.imageUrl
-                    ? <img src={card.imageUrl} className="w-[80px] h-auto rounded border object-cover" alt={card.name}/>
-                    : <div className="h-32 bg-gray-200"/>
+                    ? <img src={card.imageUrl} className="w-[80px] h-auto rounded border object-cover " alt={card.name}/>
+                    : <div className="h-32 bg-gray-200 "/>
                   }
                   <p className="mt-2 text-sm">{card.name}</p>
-                  <div className="mt-1 flex justify-evenly">
+                  <div className="mt-1 flex justify-evenly ">
                     {/* ลิงก์ไปหน้าแก้ไขรายละเอียดการ์ด */}
                     <Link href={`/admin/decks/${selectedDeckId}/cards/${card.id}`}>
-                      <button className="text-blue-500 text-sm">แก้ไข</button>
+                      <button className="text-blue-500 text-sm ">แก้ไข</button>
                     </Link>
                     <button onClick={()=>deleteCard(card.id)} className="text-red-500 text-sm">
                       ลบ
@@ -155,14 +162,14 @@ export default function AdminDecksPage() {
 
               <button
                 onClick={()=>setShowNewCard(!showNewCard)}
-                className="border border-gray-300 w-[130px] h-[260px] rounded p-2 flex items-center justify-center text-base font-medium text-gray-700 h-36 hover:bg-gray-100 cursor-pointer"
+                className="border border-gray-300 w-[130px] h-[260px] rounded p-2 ml-[10px] flex items-center justify-center text-base font-medium text-gray-700 h-36 hover:bg-gray-100 cursor-pointer"
               >
                 เพิ่มไพ่
               </button>
             </div> 
             {/* ฟอร์มเพิ่มการ์ดใหม่ */}
             {showNewCard && (
-              <div className="border-t pt-4">
+              <div className="border-t pt-4 ">
                 <h2 className="font-semibold mb-2">เพิ่มการ์ดใหม่</h2>
                 <div className="flex gap-6">
                   {/* คอลัมน์ซ้าย: รูป */}
@@ -199,7 +206,7 @@ export default function AdminDecksPage() {
                     <div className="w-3/5 flex  gap-4" >
                       <button
                         onClick={addCard}
-                        className="bg-green-500 text-white border py-1 w-2/4 "
+                        className="bg-green-500 text-white border py-1 w-2/5 "
                       >
                         บันทึกการ์ด
                       </button>
@@ -209,7 +216,7 @@ export default function AdminDecksPage() {
                           setNewCardName('');
                           setNewCardImage('');
                         }}
-                        className="bg-green-500 text-white border p-2 w-2/5"
+                        className="bg-green-500 text-white border p-2 w-2/5 ml-[10px]"
                       >
                         ยกเลิก
                       </button>
@@ -221,6 +228,5 @@ export default function AdminDecksPage() {
           </>
         )}
       </div>
-    </Layout>
   );
 }

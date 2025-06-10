@@ -117,56 +117,55 @@ export default function EditCardPage() {
   if (!deck) return <Layout><p>Loading...</p></Layout>;
 
   return (
-    <Layout>
       <div className="p-6 max-w-5xl mx-auto">
-        <h1 className="text-2xl font-bold mb-4">แก้ไขการ์ด: {name}</h1>
+        
 
         {/* ชั้นแรก: ซ้าย - รูป, ขวา - ข้อมูลหลัก */}
         <div className="flex gap-6 mb-8 ">
-          <div className="w-1/5 pr-4">
+          <div className="w-1/5 pr-4 ">
             {image && <img src={image} className="w-full h-auto rounded mb-2" alt="preview" />}
             <input type="file" accept="image/*" onChange={onFile} className="block" />
           </div>
-          <div className="w-4/5 pl-4 space-y-4 ">
+          <div className="w-4/5 pl-4 space-y-4 ml-[50px]">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 ">Deck</label>
-                <p className="mt-1 p-2 border bg-gray-100 rounded">{deck.name}</p>
+                <h1 className="text-xl font-bold mb-4"> {deck.name} </h1>
+                 <h1 className="text-xl font-bold mb-4">{name}</h1>
               </div>
 
             </div>
             <input
-              className="border p-2 w-[350] "
+              className="border p-2 h-[35] w-[350] my-[5px]"
               placeholder="ชื่อการ์ด"
               value={name}
               onChange={e => setName(e.target.value)}
             />
             <textarea
-              className="border p-2 w-[350] h-[50]"
+              className="border p-2 w-[350] h-[50] my-[5px]"
               placeholder="personality"
               value={personality}
               onChange={e => setPersonality(e.target.value)}
             />
             <textarea
-              className="border p-2 w-[350] h-[50]"
+              className="border p-2 w-[350] h-[50] my-[5px]"
               placeholder="travel"
               value={travel}
               onChange={e => setTravel(e.target.value)}
             />
             <textarea
-              className="border p-2 w-[350] h-[50]"
+              className="border p-2 w-[350] h-[50] my-[5px]"
               placeholder="flaws"
               value={flaws}
               onChange={e => setFlaws(e.target.value)}
             />
             <textarea
-              className="border p-2 w-[350] h-[50]"
+              className="border p-2 w-[350] h-[50] my-[5px]"
               placeholder="keywords"
               value={keywords}
               onChange={e => setKeywords(e.target.value)}
             />
             <textarea
-              className="border p-2 w-[350] h-[50]"
+              className="border p-2 w-[350] h-[50] my-[5px]"
               placeholder="meanings"
               value={meanings}
               onChange={e => setMeanings(e.target.value)}
@@ -180,19 +179,19 @@ export default function EditCardPage() {
             <div key={topic} className="border p-4 rounded">
               <h2 className="text-lg font-semibold capitalize mb-2 ">{topic}</h2>
               <textarea
-                className="border p-2 w-[260] h-[200] text-center"
+                className="border p-2 w-[260] h-[200] text-centerml-[5px]"
                 placeholder="Past (แต่ละบรรทัด)"
                 value={eval(`${topic}Past`)}
                 onChange={e => eval(`set${capitalize(topic)}Past`)(e.target.value)}
               />
               <textarea
-                className="border p-2 w-[260] h-[200] text-center"
+                className="border p-2 w-[260] h-[200] text-center ml-[5px]"
                 placeholder="Present"
                 value={eval(`${topic}Present`)}
                 onChange={e => eval(`set${capitalize(topic)}Present`)(e.target.value)}
               />
               <textarea
-                className="border p-2 w-[260] h-[200] text-center"
+                className="border p-2 w-[260] h-[200] text-center ml-[5px]"
                 placeholder="Future"
                 value={eval(`${topic}Future`)}
                 onChange={e => eval(`set${capitalize(topic)}Future`)(e.target.value)}
@@ -202,11 +201,10 @@ export default function EditCardPage() {
         </div>
 
         <div className="flex gap-4 pt-8">
-          <button onClick={save} className="flex-1 bg-green-500 text-white py-2 rounded">บันทึก</button>
-          <button onClick={() => router.back()} className="flex-1 border py-2 rounded">ยกเลิก</button>
+          <button onClick={save} className="flex-1 bg-green-500 h-[50] text-white py-2 rounded ml-[5px] my-[5px]">บันทึก</button>
+          <button onClick={() => router.back()} className="flex-1 border py-2 rounded ml-[5px] my-[5px]">ยกเลิก</button>
         </div>
       </div>
-    </Layout>
   );
 }
 

@@ -31,7 +31,6 @@ export default function NewCardPage() {
   };
 
   return (
-    <Layout>
       <div className="p-6 max-w-md mx-auto">
         <h1 className="text-xl mb-4">เพิ่มการ์ดใหม่</h1>
         <input
@@ -51,6 +50,5 @@ export default function NewCardPage() {
           </button>
         </div>
       </div>
-    </Layout>
   );
 }

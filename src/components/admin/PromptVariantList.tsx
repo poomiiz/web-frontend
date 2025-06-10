@@ -37,3 +37,5 @@ export function PromptVariantList({ variants, onApprove }: PromptVariantListProp
     </Card>
   );
 }
+
+export default PromptVariantList;
